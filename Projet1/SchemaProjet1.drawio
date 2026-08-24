@@ -1,0 +1,52 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram name="Page-1" id="_2Dz5lcH2AJ0TbzB5aJq">
+    <mxGraphModel dx="1088" dy="538" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QmlNUPe9zDUOUgwNDvZ--1" target="QmlNUPe9zDUOUgwNDvZ--2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--1" value="Document externe&lt;br&gt;.docx" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3333FF;" vertex="1" parent="1">
+          <mxGeometry x="240" y="20" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="QmlNUPe9zDUOUgwNDvZ--2" target="QmlNUPe9zDUOUgwNDvZ--5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--2" value="Préprocesseur Python&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp;- lecture document&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- extraction texte&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;- styles / titres&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- conversion MD&amp;nbsp;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="240" y="160" width="120" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QmlNUPe9zDUOUgwNDvZ--5" target="QmlNUPe9zDUOUgwNDvZ--6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--5" value="Markdown CommonMark" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#999900;" vertex="1" parent="1">
+          <mxGeometry x="470" y="195" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QmlNUPe9zDUOUgwNDvZ--6" target="QmlNUPe9zDUOUgwNDvZ--7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--6" value="Mistletoe" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#999900;" vertex="1" parent="1">
+          <mxGeometry x="470" y="300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--7" value="HTML" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#003300;" vertex="1" parent="1">
+          <mxGeometry x="470" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--12" value="Documment word a lire" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="35" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--13" value="Programme de pré-traitement&lt;br&gt;en python" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="210" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--14" value="MarkDown généré par le programme préprocesseur" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="610" y="210" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--16" value="L&#39;outil qui transforme le MarkDown en HTML" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="605" y="315" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="QmlNUPe9zDUOUgwNDvZ--18" value="Resultat finale :&lt;br&gt;Script HTML" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="425" width="90" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
