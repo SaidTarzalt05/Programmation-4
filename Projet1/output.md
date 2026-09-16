@@ -49,26 +49,11 @@ Ceci est un texte normal.
 Mon tableau :
 
 
-<table>
-  <tr>
-    <td>Dembele</td>
-    <td>Griezman</td>
-    <td>Ronaldo</td>
-    <td>Barcola</td>
-  </tr>
-  <tr>
-    <td>Vitinha</td>
-    <td>Veratti</td>
-    <td>Mazadona</td>
-    <td>Zaire-emery</td>
-  </tr>
-  <tr>
-    <td>Hakimi</td>
-    <td>mendes</td>
-    <td>marquinhos</td>
-    <td>Ramos</td>
-  </tr>
-</table>
+
+| Dembele | Griezman | Ronaldo | Barcola |
+| --- | --- | --- | --- |
+| Vitinha | Veratti | Mazadona | Zaire-emery |
+| Hakimi | mendes | marquinhos | Ramos |
 
 ### Mon image :
 

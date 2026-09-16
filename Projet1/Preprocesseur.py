@@ -31,11 +31,13 @@ def convertir_run(run_element, paragraphe, dossier_images):
 
     # Recherche d'images dans le run
     for element in run_element.iter():
+
         if element.tag == qn("a:blip"):
 
             relation_id = element.get(qn("r:embed"))
 
             if relation_id:
+
                 relation = paragraphe.part.rels[relation_id]
 
                 image = relation.target_part
@@ -58,10 +60,11 @@ def convertir_run(run_element, paragraphe, dossier_images):
 # --------------------------------------------------
 
 def convertir_paragraphe(paragraphe, dossier_images):
+
     texte_markdown = ""
 
-    # On parcourt les éléments XML pour détecter
-    # les textes normaux ET les hyperliens
+    # Parcourir les éléments XML pour détecter
+    # les textes normaux et les hyperliens
     for element in paragraphe._p:
 
         # Texte normal
@@ -98,26 +101,31 @@ def convertir_paragraphe(paragraphe, dossier_images):
                 texte_markdown += f"[{texte_lien}]({url})"
 
             else:
+
                 texte_markdown += texte_lien
 
     return texte_markdown
 
 
 # --------------------------------------------------
-# Conversion d'un tableau Word
+# Conversion d'un tableau Word en Markdown
 # --------------------------------------------------
 
 def convertir_tableau(tableau, dossier_images):
-    html = "\n<table>\n"
 
-    for ligne in tableau.rows:
+    markdown = "\n\n"
 
-        html += "  <tr>\n"
+    # Parcourir toutes les lignes du tableau
+    for numero_ligne, ligne in enumerate(tableau.rows):
 
+        cellules = []
+
+        # Parcourir les cellules de chaque ligne
         for cellule in ligne.cells:
 
             contenu = ""
 
+            # Récupérer le texte de chaque cellule
             for paragraphe in cellule.paragraphs:
 
                 texte = convertir_paragraphe(
@@ -126,15 +134,37 @@ def convertir_tableau(tableau, dossier_images):
                 ).strip()
 
                 if texte:
+
                     contenu += texte + " "
 
-            html += f"    <td>{contenu.strip()}</td>\n"
+            # Nettoyage du contenu
+            contenu = contenu.strip()
 
-        html += "  </tr>\n"
+            # Éviter de briser la syntaxe Markdown
+            contenu = contenu.replace("|", "\\|")
 
-    html += "</table>\n\n"
+            # Gérer les retours à la ligne
+            contenu = contenu.replace("\n", "<br>")
 
-    return html
+            cellules.append(contenu)
+
+        # Créer une ligne Markdown
+        markdown += "| " + " | ".join(cellules) + " |\n"
+
+        # Ajouter le séparateur après la première ligne
+        if numero_ligne == 0:
+
+            markdown += "|"
+
+            for cellule in cellules:
+
+                markdown += " --- |"
+
+            markdown += "\n"
+
+    markdown += "\n"
+
+    return markdown
 
 
 # --------------------------------------------------
@@ -147,8 +177,7 @@ def convertir_en_markdown(chemin, dossier_images):
 
     markdown = ""
 
-    # Permet de garder l'ordre des paragraphes
-    # et des tableaux dans le document
+    # Garder l'ordre des paragraphes et tableaux
     for element in document.element.body.iterchildren():
 
         # ------------------------------------------
@@ -171,24 +200,30 @@ def convertir_en_markdown(chemin, dossier_images):
 
             # Titres
             if style == "Heading 1":
+
                 markdown += "# " + texte + "\n\n"
 
             elif style == "Heading 2":
+
                 markdown += "## " + texte + "\n\n"
 
             elif style == "Heading 3":
+
                 markdown += "### " + texte + "\n\n"
 
             # Liste à puces
             elif style == "List Bullet":
+
                 markdown += "- " + texte + "\n"
 
             # Liste numérotée
             elif style == "List Number":
+
                 markdown += "1. " + texte + "\n"
 
             # Paragraphe normal
             else:
+
                 markdown += texte + "\n\n"
 
         # ------------------------------------------
@@ -253,7 +288,10 @@ with open(
 contenu_html = mistletoe.markdown(markdown)
 
 
-# Créer une vraie page HTML
+# --------------------------------------------------
+# CRÉATION DE LA PAGE HTML
+# --------------------------------------------------
+
 html = f"""<!DOCTYPE html>
 
 <html lang="fr">
@@ -263,6 +301,31 @@ html = f"""<!DOCTYPE html>
     <meta charset="UTF-8">
 
     <title>Document converti</title>
+
+    <style>
+
+        /* Affichage des tableaux */
+
+        table {{
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }}
+
+        th, td {{
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }}
+
+        /* Affichage des images */
+
+        img {{
+            max-width: 500px;
+            height: auto;
+        }}
+
+    </style>
 
 </head>
 
@@ -276,7 +339,10 @@ html = f"""<!DOCTYPE html>
 """
 
 
-# Sauvegarder le HTML
+# --------------------------------------------------
+# SAUVEGARDE DU FICHIER HTML
+# --------------------------------------------------
+
 with open(
     fichier_html,
     "w",
