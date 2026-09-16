@@ -5,6 +5,9 @@ from docx.text.run import Run
 from docx.oxml.ns import qn
 from pathlib import Path
 import mistletoe
+import re
+import unicodedata
+import html as module_html
 
 
 # --------------------------------------------------
@@ -91,6 +94,7 @@ def convertir_paragraphe(paragraphe, dossier_images):
 
                 # Conversion en Markdown
                 texte_markdown += f"[{texte_lien}]({url})"
+
             else:
                 texte_markdown += texte_lien
 
@@ -130,11 +134,14 @@ def convertir_tableau(tableau, dossier_images):
         # Séparateur Markdown après la première ligne
         if numero_ligne == 0:
             markdown += "|"
+
             for _ in cellules:
                 markdown += " --- |"
+
             markdown += "\n"
 
     markdown += "\n"
+
     return markdown
 
 
@@ -152,6 +159,7 @@ def convertir_en_markdown(chemin, dossier_images):
         # ------------------------------------------
         # PARAGRAPHE
         # ------------------------------------------
+
         if element.tag == qn("w:p"):
             paragraphe = Paragraph(element, document)
 
@@ -190,14 +198,183 @@ def convertir_en_markdown(chemin, dossier_images):
         # ------------------------------------------
         # TABLEAU
         # ------------------------------------------
+
         elif element.tag == qn("w:tbl"):
             tableau = Table(element, document)
+
             markdown += convertir_tableau(
                 tableau,
                 dossier_images
             )
 
     return markdown
+
+
+# --------------------------------------------------
+# Création d'un identifiant pour les titres
+# --------------------------------------------------
+
+def creer_identifiant(titre):
+
+    # Retirer les accents
+    titre = unicodedata.normalize("NFKD", titre)
+
+    titre = "".join(
+        caractere for caractere in titre
+        if not unicodedata.combining(caractere)
+    )
+
+    # Convertir en minuscules
+    titre = titre.lower()
+
+    # Remplacer les espaces par des tirets
+    titre = re.sub(r"\s+", "-", titre)
+
+    # Retirer les caractères spéciaux
+    titre = re.sub(r"[^\w-]", "", titre)
+
+    return titre or "section"
+
+
+# --------------------------------------------------
+# Création de la table des matières
+# --------------------------------------------------
+
+def creer_table_matiere(markdown):
+
+    # Rechercher le marqueur contenu:
+    marqueur = None
+
+    for ligne in re.finditer(r"(?m)^[^\r\n]*", markdown):
+
+        texte = ligne.group(0)
+
+        # Supprimer les astérisques Markdown
+        texte = texte.replace("*", "")
+
+        # Supprimer les espaces
+        texte = re.sub(r"\s+", "", texte)
+
+        # Vérifier si le marqueur correspond
+        if texte.lower() == "contenu:":
+
+            marqueur = ligne
+            break
+
+    # Si le marqueur n'existe pas
+    if marqueur is None:
+
+        print("Aucun **contenu:** détecté.")
+
+        return markdown
+
+    print("**contenu:** détecté.")
+
+    # Début de la table des matières
+    table = "**Table des matières**\n\n"
+
+    # Rechercher les titres Markdown
+    modele = r"(?m)^(#{1,6})[ \t]+(.+?)[ \t]*$"
+
+    identifiants = {}
+
+    for correspondance in re.finditer(modele, markdown):
+
+        # Déterminer le niveau du titre
+        niveau = len(correspondance.group(1))
+
+        # Récupérer le titre
+        titre = correspondance.group(2).strip()
+
+        # Retirer les marqueurs simples de gras et d'italique
+        titre_simple = titre.replace("*", "")
+
+        # Créer l'identifiant
+        identifiant = creer_identifiant(titre_simple)
+
+        # Éviter les identifiants identiques
+        nombre = identifiants.get(identifiant, 0)
+
+        identifiants[identifiant] = nombre + 1
+
+        if nombre > 0:
+            identifiant += f"-{nombre}"
+
+        # Ajouter les titres de niveau 2 à 6
+        if niveau >= 2:
+
+            indentation = "  " * (niveau - 2)
+
+            table += (
+                f"{indentation}- "
+                f"[{titre_simple}](#{identifiant})\n"
+            )
+
+    # Insérer la table après le marqueur
+    position = marqueur.end()
+
+    markdown = (
+        markdown[:position]
+        + "\n\n"
+        + table
+        + "\n"
+        + markdown[position:]
+    )
+
+    print("Table des matières créée.")
+
+    return markdown
+
+
+# --------------------------------------------------
+# Ajouter les identifiants aux titres HTML
+# --------------------------------------------------
+
+def ajouter_identifiants_html(contenu_html):
+
+    identifiants = {}
+
+    # Rechercher les titres HTML h1 à h6
+    modele = r"<h([1-6])>(.*?)</h\1>"
+
+    def modifier_titre(correspondance):
+
+        niveau = correspondance.group(1)
+
+        contenu = correspondance.group(2)
+
+        # Récupérer uniquement le texte du titre
+        titre = re.sub(r"<[^>]+>", "", contenu)
+
+        titre = module_html.unescape(titre)
+
+        # Créer l'identifiant
+        identifiant = creer_identifiant(titre)
+
+        # Éviter les identifiants identiques
+        nombre = identifiants.get(identifiant, 0)
+
+        identifiants[identifiant] = nombre + 1
+
+        if nombre > 0:
+            identifiant += f"-{nombre}"
+
+        # Ajouter l'identifiant au titre HTML
+        return (
+            f'<h{niveau} id="{identifiant}">'
+            f'{contenu}'
+            f'</h{niveau}>'
+        )
+
+    # Modifier tous les titres HTML
+    contenu_html = re.sub(
+        modele,
+        modifier_titre,
+        contenu_html,
+        flags=re.DOTALL
+    )
+
+    return contenu_html
 
 
 # --------------------------------------------------
@@ -224,12 +401,24 @@ markdown = convertir_en_markdown(
     dossier_images
 )
 
-# Sauvegarder le Markdown
+
+# --------------------------------------------------
+# CRÉATION DE LA TABLE DES MATIÈRES
+# --------------------------------------------------
+
+markdown = creer_table_matiere(markdown)
+
+
+# --------------------------------------------------
+# SAUVEGARDER LE MARKDOWN
+# --------------------------------------------------
+
 with open(
     fichier_markdown,
     "w",
     encoding="utf-8"
 ) as fichier:
+
     fichier.write(markdown)
 
 
@@ -238,6 +427,13 @@ with open(
 # --------------------------------------------------
 
 contenu_html = mistletoe.markdown(markdown)
+
+
+# --------------------------------------------------
+# AJOUT DES IDENTIFIANTS AUX TITRES HTML
+# --------------------------------------------------
+
+contenu_html = ajouter_identifiants_html(contenu_html)
 
 
 # --------------------------------------------------
@@ -285,7 +481,9 @@ with open(
     "w",
     encoding="utf-8"
 ) as fichier:
+
     fichier.write(html)
+
 
 print("Conversion terminée.")
 print("Markdown :", fichier_markdown)

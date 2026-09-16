@@ -1,5 +1,21 @@
 # Test ultime
 
+Contenu :
+
+**Table des matières**
+
+- [Premier paragraphe :](#premier-paragraphe-)
+- [Deuxième paragraphe :](#deuxieme-paragraphe-)
+- [Quatrième paragraphe :](#quatrieme-paragraphe-)
+- [Cinquième paragraphe :](#cinquieme-paragraphe-)
+- [Introduction](#introduction)
+  - [Ma liste :](#ma-liste-)
+  - [Ma liste numérotée :](#ma-liste-numerotee-)
+  - [Mon lien :](#mon-lien-)
+  - [Mon image :](#mon-image-)
+
+
+
 ## Premier paragraphe :
 
 Bonjour, ceci est mon premier paragraphe.
@@ -28,7 +44,7 @@ Ceci est un texte normal.
 
 *Ceci est en italique*
 
-***Ceci est en ******italique******&******Gras******.***
+***Ceci est en italique******&******Gras******.***
 
 ### Ma liste :
 
@@ -46,6 +62,8 @@ Ceci est un texte normal.
 
 3. Étape trois
 
+4. Étape quatre
+
 Mon tableau :
 
 
@@ -54,6 +72,10 @@ Mon tableau :
 | --- | --- | --- | --- |
 | Vitinha | Veratti | Mazadona | Zaire-emery |
 | Hakimi | mendes | marquinhos | Ramos |
+
+### Mon lien :
+
+[https://cegepsherbrooke.qc.ca/](https://cegepsherbrooke.qc.ca/)
 
 ### Mon image :
 
